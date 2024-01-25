@@ -16,9 +16,8 @@ This Python program is a simple two-player implementation of the classic game Ti
 **Game Logic:** While simple, the code introduces basic game logic concepts by tracking player turns and updating the game board accordingly.
 
 ### Running the Program:
-
-Open a terminal or command prompt in the directory where you saved the file.
-Type python tic_tac_toe.py and press Enter.
+- Open a terminal or command prompt in the directory where you saved the file.
+- Type python tic_tac_toe.py and press Enter.
 
 ### Playing the Game:
 Follow the prompts to enter row and column numbers to place your marks (X or O).
