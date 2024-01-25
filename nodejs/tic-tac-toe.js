@@ -1,57 +1,65 @@
+function playingField(field) {
+  for (let row = 0; row < 5; row++) {
+      if (row % 2 === 0) {
+          const practicalRow = Math.floor(row / 2);
+          for (let column = 0; column < 5; column++) {
+              if (column % 2 === 0) {
+                  const practicalColumn = Math.floor(column / 2);
+                  if (column !== 4) {
+                      process.stdout.write(field[practicalColumn][practicalRow]);
+                  } else {
+                      console.log(field[practicalColumn][practicalRow]);
+                  }
+              } else {
+                  process.stdout.write("|");
+              }
+          }
+      } else {
+          console.log("_____");
+      }
+  }
+  return true;
+}
+
+let player = 1;
+let currentField = [
+  [" ", " ", " "],
+  [" ", " ", " "],
+  [" ", " ", " "]
+];
+
+playingField(currentField);
+
 const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
-const BOARD_SIZE = 3;
-const PLAYERS = {
-  1: 'X',
-  2: 'O',
-};
+function takeTurn() {
+  console.log("Player's turn:", player);
 
-function initializeBoard() {
-  return new Array(BOARD_SIZE).fill(null).map(() => new Array(BOARD_SIZE).fill(' '));
-}
+  rl.question("Enter Row number:\n", function (moveRow) {
+      rl.question("Enter Column number:\n", function (moveColumn) {
+          const moveRowNum = parseInt(moveRow);
+          const moveColumnNum = parseInt(moveColumn);
 
-function displayBoard(board) {
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    console.log(board[row].join(' | '));
-  }
-}
+          if (player === 1) {
+              if (currentField[moveColumnNum][moveRowNum] === " ") {
+                  currentField[moveColumnNum][moveRowNum] = "X";
+                  player = 2;
+              }
+          } else {
+              if (currentField[moveColumnNum][moveRowNum] === " ") {
+                  currentField[moveColumnNum][moveRowNum] = "O";
+                  player = 1;
+              }
+          }
 
-function isValidMove(board, row, col) {
-  return row >= 1 && row <= BOARD_SIZE && col >= 1 && col <= BOARD_SIZE && !board[row - 1][col - 1];
-}
-
-function makeMove(board, player, row, col) {
-  board[row - 1][col - 1] = PLAYERS[player];
-}
-
-function checkWin(board, player) {
-  const winConditions = [
-    [[0, 0], [0, 1], [0, 2]],
-    [[1, 0], [1, 1], [1, 2]],
-    [[2, 0], [2, 1], [2, 2]],
-    [[0, 0], [1, 0], [2, 0]],
-    [[0, 1], [1, 1], [2, 1]],
-    [[0, 2], [1, 2], [2, 2]],
-    [[0, 0], [1, 1], [2, 2]],
-    [[0, 2], [1, 1], [2, 0]],
-  ];
-  for (const winCondition of winConditions) {
-    if (winCondition.every(c => board[c[0]][c[1]] === PLAYERS[player])) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function isBoardFull(board) {
-  return board.every(row => row.every(col => col !== ' '));
-}
-
-function playGame() {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
+          playingField(currentField);
+          takeTurn();
+      });
   });
+}
 
-  let board = initializeBoard();
-  let player = 1;
+takeTurn();
